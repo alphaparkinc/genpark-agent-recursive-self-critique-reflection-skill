@@ -1,0 +1,28 @@
+{
+  "name": "genpark-agent-recursive-self-critique-reflection-skill",
+  "version": "1.0.0",
+  "description": "Multi-agent recursive self-critique and reflection engine executing iterative evaluation-revision loops to autonomously repair logic defects, test failures, and hallucinations.",
+  "category": "Service",
+  "author": "AlphaPark",
+  "tags": [
+    "reflexion",
+    "self-critique",
+    "iterative-repair",
+    "agent-evaluator",
+    "mcp"
+  ],
+  "tools": [
+    {
+      "name": "evaluate_draft_critique",
+      "description": "Critique draft solution against logical, security, and edge-case criteria."
+    },
+    {
+      "name": "apply_iterative_refinement",
+      "description": "Execute multi-turn reflection loop until solution passes verification."
+    },
+    {
+      "name": "run_reflection_benchmark",
+      "description": "Run recursive self-critique and reflection benchmark."
+    }
+  ]
+}
