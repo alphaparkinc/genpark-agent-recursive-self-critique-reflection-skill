@@ -23,7 +23,7 @@ class AgentRecursiveSelfCritiqueReflection:
             issues.append("Dangerous arbitrary execution primitives detected")
             score -= 0.4
 
-        if re.search(r"def\s+\w+\([^)]*\):(?!\s*"""[\s\S]*?""")", draft):
+        if re.search(r'def\s+\w+\([^)]*\):(?!\s*"{3}[\s\S]*?"{3})', draft):
             issues.append("Missing documentation docstring on functions")
             score -= 0.1
 
@@ -62,24 +62,16 @@ class AgentRecursiveSelfCritiqueReflection:
 
             # Apply deterministic self-healing transformations
             repaired = current_version
-            if "except Exception:
-        pass" in repaired:
-                repaired = repaired.replace("except Exception:
-        pass", "except Exception as e:
-        logging.error(f'Processing error: {e}')
-        raise")
+            if "except Exception:\n        pass" in repaired:
+                repaired = repaired.replace("except Exception:\n        pass", "except Exception as e:\n        logging.error(f'Processing error: {e}')\n        raise")
             if "TODO: handle edge case" in repaired:
-                repaired = repaired.replace("# TODO: handle edge case", "if not data:
-        return []")
+                repaired = repaired.replace("# TODO: handle edge case", "if not data:\n        return []")
             if "eval(query)" in repaired:
                 repaired = repaired.replace("eval(query)", "json.loads(query)")
             
             # Add docstring if missing
             if '"""' not in repaired and "def " in repaired:
-                repaired = re.sub(r'(def\s+\w+\([^)]*\):)
-', r'
-    """Process payload with input boundary validation."""
-', repaired)
+                repaired = re.sub(r'(def\s+\w+\([^)]*\):)\n', r'\1\n    """Process payload with input boundary validation."""\n', repaired)
 
             current_version = repaired
 
